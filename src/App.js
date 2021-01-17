@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
-
+import {Loader} from './components/Loader'
+import { useState, useEffect } from 'react';
 function App() {
+  let initialLoadPercentage = 0
+  const [loadPercentage, setLoadPercentage] = useState(initialLoadPercentage);
+  const [isLoadingPaused, setIsLoadingPaused] = useState(false);
+  useEffect(() => {
+    var timer;
+    if(isLoadingPaused) {
+      return () => clearInterval(timer);
+    }
+    if(loadPercentage < 100 && !isLoadingPaused) {
+      var timer = setInterval(() => {
+        if(!isLoadingPaused) {
+          setLoadPercentage(loadPercentage + 1);
+        }
+        
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [loadPercentage, isLoadingPaused]);
+  const resetLoading = () => {
+    setIsLoadingPaused(false);
+    setLoadPercentage(0);
+  }
+  const pauseLoading = () => {
+    setIsLoadingPaused(true);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Loader initialLoad={loadPercentage}></Loader>
+      <button onClick={resetLoading}>Reset</button> &nbsp;
+      <button onClick={pauseLoading}>Pause</button>
     </div>
   );
 }

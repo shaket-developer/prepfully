@@ -1,0 +1,15 @@
+.circularLoaderBg {
+    fill: none;
+    stroke: #CCC;
+}
+
+.circularLoaderFg {
+    stroke: red;
+    fill: none;
+}
+.circularLoaderText {
+    font-size: 10px;
+    font-weight: 600;
+    fill: rgba(0,0,0,0.9);
+    transform: translate(0 50%);
+}
